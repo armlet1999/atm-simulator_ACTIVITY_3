@@ -1,0 +1,94 @@
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        decimal balance = 1000.00M;
+        bool continueRunning = true;
+
+        Console.WriteLine("Welcome to the ATM System");
+        Console.WriteLine("Develop by [ARGIE SATOR]");
+        MenuStart:
+        while (continueRunning)
+        {
+            Console.WriteLine("\nPlease select an option:");
+            Console.WriteLine("1: Check balance");
+            Console.WriteLine("2: Deposit money");
+            Console.WriteLine("3: Withdraw money");
+            Console.WriteLine("4: Exit");
+
+            if (!int.TryParse(Console.ReadLine(), out int choice))
+            {
+                Console.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                goto MenuStart;
+            }
+
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine($"\nYour current balance is: {balance:F2}");
+                    break;
+
+                case 2:
+                    while (true)
+                    {
+                        Console.Write("\nEnter amount to deposit: ");
+                        if (!decimal.TryParse(Console.ReadLine(), out decimal depositAmount))
+                        {
+                            Console.WriteLine("Invalid input. Please enter a valid amount.");
+                            continue;
+                        }
+
+                        if (depositAmount <= 0)
+                        {
+                            Console.WriteLine("Deposit amount must be positive.");
+                            continue;
+                        }
+
+                        balance += depositAmount;
+                        Console.WriteLine($"Deposit successful. New balance: {balance:F2}");
+                        break;
+                    }
+                    break;
+
+                case 3:
+                    while (true)
+                    {
+                        Console.Write("\nEnter amount to withdraw: ");
+                        if (!decimal.TryParse(Console.ReadLine(), out decimal withdrawAmount))
+                        {
+                            Console.WriteLine("Invalid input. Please enter a valid amount.");
+                            continue;
+                        }
+
+                        if (withdrawAmount <= 0)
+                        {
+                            Console.WriteLine("Withdrawal amount must be positive.");
+                            continue;
+                        }
+
+                        if (withdrawAmount > balance)
+                        {
+                            Console.WriteLine("Insufficient funds.");
+                            continue;
+                        }
+
+                        balance -= withdrawAmount;
+                        Console.WriteLine($"Withdrawal successful. New balance: {balance:F2}");
+                        break;
+                    }
+                    break;
+
+                case 4:
+                    Console.WriteLine("\nThank you for using the ATM. Goodbye!");
+                    continueRunning = false;
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid option.");
+                    goto MenuStart;
+            }
+        }
+    }
+}
